@@ -16,11 +16,15 @@ Application Script Reporter is a business applications that produce Office docum
 
 #### 2. Click button "New project" to create a new project
 
-![picture1](images/2.png?raw=true "Apps Script")
+![picture2](images/2.png?raw=true "Apps Script 2")
 
 you can name it -> ``ASReporter Office Print Server``
 
-#### 3. Paste the code from file ``Code.gs.js`` to ``Code.gs``
+#### 3. Add Apps script code
+
+Copy and Paste the code from file in this repo: [Code.gs.js](Code.gs.js) to the ``Code.gs`` file in Apps script
+
+![picture3](images/2.png?raw=true "Apps Script 3")
 
 #### 4. Deploy Web app
 
