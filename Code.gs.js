@@ -1,19 +1,35 @@
 // Copyright © 2024 SVIETE Andrzej Raczkowski
-// Description: Google Apps Script code for AsReporter - Application Script Reporter
+// Description: Google Apps Script code for ASReporter - Application Script Reporter
 // This app is used to generate reports based on the templates and data in JSON format
 
-// global variables
-const TEMPLATES_FOLDER_NAME = 'AsReporter Templates Files';
+// test variables used in debug mode
+const TEMPLATES_FOLDER_NAME = 'ASReporter Templates Files';
 let fileType = "application/pdf";
 let fileName = "filename.pdf";
+let templateName = "Demo report template";
+let reportData = {
+       placeholders:{
+          Name:"Andrzej 😎",
+          TemplatePlaceholder1:"Value from JSON",
+          DYN_COL_2: "Description"
+       },
+       tables:{
+          0: [
+            ['1:1', '1:2', '1:3', '1:4'],
+            ['2:1', '2:2', '2:3', '2:4']
+          ],
+          1: [['❤️', '☠️'], ['👍', '👏']]
+       }
+    };
 
 // doPost function is used to handle the POST request from the client.
 function doPost(e) {
   // we have here the data from the client in POST body
-  let dataBody= JSON.parse(e.postData.contents);
-  let templateName = dataBody.template;
-  let reportData = dataBody.data;
-
+  if (e) {
+    let dataBody= JSON.parse(e.postData.contents);
+    templateName = dataBody.template;
+    reportData = dataBody.data;
+  }
   // transform data into report
   let templateFile = getDriveFileByName(templateName);
   let reportEncoded = renderReportFile(reportData, templateFile);
@@ -40,7 +56,7 @@ function doGet(e) {
           <div class="form-signin">
             <img class="mb-4" src="https://raw.githubusercontent.com/araczkowski/AsReporter/main/images/about.webp" alt="SVIETE" style="max-width:80%;">
             <h1 class="h3 mb-3 font-weight-normal">Please find the instruction and source code on Github:</h1>
-            <h2 class="h3 mb-3 font-weight-normal"><a href="https://github.com/araczkowski/AsReporter" target="_blank">Github AsReporter Project</a></h3>
+            <h2 class="h3 mb-3 font-weight-normal"><a href="https://github.com/araczkowski/ASReporter" target="_blank">Github AsReporter Project</a></h3>
             <p class="mt-5 mb-3 text-muted"> © 2024 SVIETE Andrzej Raczkowski</p>
           </div>
       </body>
@@ -50,7 +66,7 @@ function doGet(e) {
 
 // get the template file by neame - we are taking the last one - use unic name on drive to avoid this
 function getDriveFileByName(fileName) {
-    let files = DriveApp.getFilesByName(fileName);
+  let files = DriveApp.getFilesByName(fileName);
   let fileId = '';
   while (files.hasNext()) {
     let file = files.next();
@@ -74,15 +90,35 @@ function renderReportFile(reportData, templateFile) {
   // gate template body
   let TemplatesFolder = getDriveFolderByName(TEMPLATES_FOLDER_NAME);
   const newTemplateFile = templateFile.makeCopy(TemplatesFolder);
-  const  OpenDoc = DocumentApp.openById(newTempFile.getId());
+  const  OpenDoc = DocumentApp.openById(newTemplateFile.getId());
 
   // replace the placeholders with the data
   const body = OpenDoc.getBody();
-  body.replaceText("{AisGateId}", reportData.AisGateId);
+  Object.keys(reportData.placeholders).forEach(function(key) {
+    body.replaceText("{"+ key +"}", reportData.placeholders[key]);
+  })
+
+  // replace table with data
+  var cellStyle = {};
+  cellStyle[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] = DocumentApp.HorizontalAlignment.CENTER;
+  const tables = body.getTables();
+  let tableIdx = 0;
+  tables.forEach(table => {
+    table.removeRow(1);
+    for (let r = 0; r < reportData.tables[tableIdx].length; r++) {
+      let tr = table.appendTableRow();
+      for (let c = 0; c < reportData.tables[tableIdx][r].length; c++) {
+        let td = tr.appendTableCell(reportData.tables[tableIdx][r][c]);
+        td.getChild(0).asParagraph().setAttributes(cellStyle);
+      }
+    }
+    tableIdx = tableIdx+1;
+  });
 
   // save the file and return the encoded content
   OpenDoc.saveAndClose();
   const BLOBPDF = newTemplateFile.getAs(fileType);
+  // comment this to not strore pdf in Google Drive
   TemplatesFolder.createFile(BLOBPDF).setName(fileName);
   TemplatesFolder.removeFile(newTemplateFile);
 

@@ -1,7 +1,25 @@
-let url = 'https://script.google.com/macros/s/AKfycby1XlaeeK0lI4VLhTmk2k3en5d23x_-W2Gkuvj751gZKUj4eGRyWTDaxtZct02VPc_z/exec';
-let bodyData = { template: "TemplateAPEX1", data: { AisGateId: "xxx123" } };
+// Copyright © 2024 SVIETE Andrzej Raczkowski
+// Description: Script to get report from AsReporter - you can run it on any app/webpage
+let url = 'https://script.google.com/macros/s/AKfycbx_V5pYTR9iTjcWpi4u1R8u2K850i8FFx6JoGH_1FpBr36SVJVkN_TPlVTIvguMLaxN/exec';
+let bodyData = {
+    template:"Demo report template",
+    data:{
+        placeholders:{
+            Name:"Celina ❤️",
+            TemplatePlaceholder1:"This is imporant data from JSON",
+            DYN_COL_2: "Column 2"
+         },
+         tables:{
+            0: [
+              ['r1c1', 'r1c2', 'r1c3', 'r1c4'],
+              ['r2c1', 'r2c2', 'r2c3', 'r2c4']
+            ],
+            1: [['❤️', '☠️☠️'], ['👍👍👍', '👏👏👏👏']]
+         }
+    }
+ }
 let fileType = "application/pdf";
-let fileName = "filename.pdf";
+let fileName = "ImportantReportNo1.pdf";
 
 fetch(url, { method: 'POST', redirect: 'follow', body: JSON.stringify(bodyData) })
     .then(response => response.text())
