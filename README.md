@@ -16,32 +16,40 @@ Application Script Reporter is a business applications that produce Office docum
 
 #### 2. Click button "New project" to create a new project
 
-![picture2](images/2.png?raw=true "Apps Script 2")
-
+![picture2](images/2.png?raw=true "Apps Script 2"):
 you can name it -> ``ASReporter Office Print Server``
 
 #### 3. Add Apps script code
 
-Copy and Paste the code from file in this repo: [Code.gs.js](Code.gs.js) to the ``Code.gs`` file in Apps script
-
+Copy and Paste the code from file in this repo: [Code.gs.js](Code.gs.js) to the ``Code.gs`` file in Apps script:
 ![picture3](images/3.png?raw=true "Apps Script 3")
 
 #### 4. Deploy Web app
 
-Click a button ``Deploy`` -> ``New deployment`` to deploy the project
-
+Click a button ``Deploy`` -> ``New deployment`` to deploy the project:
 ![picture4](images/4.png?raw=true "Apps Script 4")
 
-as a deployment type choice ``Web app``
-
+as a deployment type choice ``Web app``:
 ![picture5](images/5.png?raw=true "Apps Script 5")
 
 you can add a description and you need to change the ``Who has access`` parameter to ``Anyone``
-after this click the ``Deploy`` button
-
+after this click the ``Deploy`` button:
 ![picture6](images/6.png?raw=true "Apps Script 6")
 
-if you are doing this for the first time you need to ``Authorize access``
+if you are doing this for the first time you need to ``Authorize access``:
+![picture7](images/7.png?raw=true "Apps Script 7")
+
+and allow ASReporter to manage Google Drive files:
+![picture8](images/8.png?raw=true "Apps Script 8")
+
+
+#### 4. Test Web app
+
+After the deployment you can test your app - just copy the app URL:
+![picture9](images/9.png?raw=true "Apps Script 9")
+
+ and paste it to the browser
+![picture10](images/9.png?raw=true "Apps Script 10")
 
 
 ### Create report templates folder in Google Drive
