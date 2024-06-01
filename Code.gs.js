@@ -1,9 +1,9 @@
 // Copyright © 2024 SVIETE Andrzej Raczkowski
-// Description: Google Apps Script code for ASReporter - Application Script Reporter
+// Description: Google Apps Script code for AsReporter - Application Script Reporter
 // This app is used to generate reports based on the templates and data in JSON format
 
 // global variables
-const TEMPLATES_FOLDER_NAME = 'ASReporter Templates Files';
+const TEMPLATES_FOLDER_NAME = 'AsReporter Templates Files';
 let fileType = "application/pdf";
 let fileName = "filename.pdf";
 
@@ -40,7 +40,7 @@ function doGet(e) {
           <div class="form-signin">
             <img class="mb-4" src="https://raw.githubusercontent.com/araczkowski/AsReporter/main/images/about.webp" alt="SVIETE" style="max-width:80%;">
             <h1 class="h3 mb-3 font-weight-normal">Please find the instruction and source code on Github:</h1>
-            <h2 class="h3 mb-3 font-weight-normal"><a href="https://github.com/araczkowski/ASReporter" target="_blank">Github AsReporter Project</a></h3>
+            <h2 class="h3 mb-3 font-weight-normal"><a href="https://github.com/araczkowski/AsReporter" target="_blank">Github AsReporter Project</a></h3>
             <p class="mt-5 mb-3 text-muted"> © 2024 SVIETE Andrzej Raczkowski</p>
           </div>
       </body>

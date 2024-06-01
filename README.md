@@ -1,10 +1,10 @@
-# ASReporter - Application Script Reporter
+# AsReporter - Application Script Reporter
 
-Application Script Reporter is a business applications that produce Office documents and reports beased on templates and JSON data. ASReporter is a Web app writen in Google Apps Script, it enabling any web application to generate your Office (Word, Excel, PowerPoint), HTML, Text and PDF-documents in no time and effort - ASReporter make printing, reporting and exporting your data fast and easy.
+Application Script Reporter is a business applications that produce Office documents and reports beased on templates and JSON data. AsReporter is a Web app writen in Google Apps Script, it enabling any web application to generate your Office (Word, Excel, PowerPoint), HTML, Text and PDF-documents in no time and effort - AsReporter make printing, reporting and exporting your data fast and easy.
 
 ## Architecture overview
 
-![diagram](images/ASReporter.png?raw=true "ASReporter diagram")
+![diagram](images/AsReporter.png?raw=true "AsReporter diagram")
 
 ## Installation and integration with your system - step by step 
 
@@ -17,7 +17,7 @@ Application Script Reporter is a business applications that produce Office docum
 #### 2. Click button "New project" to create a new project
 
 ![picture2](images/2.png?raw=true "Apps Script 2"):
-you can name it -> ``ASReporter Office Print Server``
+you can name it -> ``AsReporter Office Print Server``
 
 #### 3. Add Apps script code
 
@@ -39,7 +39,7 @@ after this click the ``Deploy`` button:
 if you are doing this for the first time you need to ``Authorize access``:
 ![picture7](images/7.png?raw=true "Apps Script 7")
 
-and allow ASReporter to manage Google Drive files:
+and allow AsReporter to manage Google Drive files:
 ![picture8](images/8.png?raw=true "Apps Script 8")
 
 #### 4. Test Web app
@@ -50,16 +50,24 @@ After the deployment you can test your app - just copy the app URL:
  and paste it to the browser - you will see the app info page
 ![picture10](images/10.png?raw=true "Apps Script 10")
 
-### Create report templates folder in Google Drive
+### Create report template in Google Drive
 
-#### 1. Go to this URL -> ``https://drive.google.com/``
+#### 1. Copy the folder with demo template
 
-#### 2. Upload folder with files from this repo ``ASReporter Files``
+Go to -> https://drive.google.com/
+Copy and Paste the folder ``AsReporter Templates Files`` from this repo to the ``Google Drive`` -> ``AsReporter Templates Files``:
+![picture11](images/11.png?raw=true "Apps Script 11")
 
-### Call script from browser
+#### 2. Review the demo template
 
-#### 1. GET the info about Web app
+In the folder ``Google Drive`` -> ``AsReporter Templates Files`` there is a file ``Demo report template`` open it in Google Docs to see how the template is writen:
 
-#### 2. Use ``BrowserAppCode.js`` to POST report rendering and download
+
+### Call report generation from any web app
+
+#### 1. Use ``BrowserAppCode.js`` to POST report rendering and download
+
+Go to any page in the browser, for example ``https://google.com`` and open a browser console via ``F12``.
+Now paste to the console code from the script ``BrowserAppCode.js``
 
 #### 3. Use ``ApexAppCode.js`` in Oracle APEX to POST report rendering and download from Oracle APEX
