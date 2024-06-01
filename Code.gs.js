@@ -1,8 +1,9 @@
-// Description: Google Apps Script code for Google Report Server
-// This code is used to generate a report based on the template and data provided by the client.
+// Copyright © 2024 SVIETE Andrzej Raczkowski
+// Description: Google Apps Script code for ASReporter - Application Script Reporter
+// This app is used to generate reports based on the templates and data in JSON format
 
 // global variables
-const TEMPLATES_FOLDER_NAME = 'APEX Google Report Server';
+const TEMPLATES_FOLDER_NAME = 'ASReporter Templates Files';
 let fileType = "application/pdf";
 let fileName = "filename.pdf";
 
@@ -23,9 +24,28 @@ function doPost(e) {
 
 // doGet function is used to handle the GET request from the client.
 function doGet(e) {
-  // we have a call from the client as GET method
-  // return info about app and about the call via POST method
-  return ContentService.createTextOutput('Call me via POST!');
+  // Call from the client via GET method - return info about app
+  let infoPage = `
+    <html lang="en">
+      <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+          <meta name="description" content="">
+          <meta name="author" content="SVIETE Andrzej Raczkowski">
+          <title>Info page for AsReporter</title>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      </head>
+      <body class="text-center">
+          <h1 style="padding: 30px;">AsReporter</h1>
+          <div class="form-signin">
+            <img class="mb-4" src="https://raw.githubusercontent.com/araczkowski/AsReporter/main/images/about.webp" alt="SVIETE" style="max-width:80%;">
+            <h1 class="h3 mb-3 font-weight-normal">Please find the instruction and source code on Github:</h1>
+            <h2 class="h3 mb-3 font-weight-normal"><a href="https://github.com/araczkowski/ASReporter" target="_blank">Github AsReporter Project</a></h3>
+            <p class="mt-5 mb-3 text-muted"> © 2024 SVIETE Andrzej Raczkowski</p>
+          </div>
+      </body>
+    </html>`;
+  return HtmlService.createHtmlOutput(infoPage);
 }
 
 // get the template file by neame - we are taking the last one - use unic name on drive to avoid this
