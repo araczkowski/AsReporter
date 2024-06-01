@@ -42,7 +42,6 @@ if you are doing this for the first time you need to ``Authorize access``:
 and allow ASReporter to manage Google Drive files:
 ![picture8](images/8.png?raw=true "Apps Script 8")
 
-
 #### 4. Test Web app
 
 After the deployment you can test your app - just copy the app URL:
@@ -50,7 +49,6 @@ After the deployment you can test your app - just copy the app URL:
 
  and paste it to the browser
 ![picture10](images/9.png?raw=true "Apps Script 10")
-
 
 ### Create report templates folder in Google Drive
 
