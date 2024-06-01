@@ -1,28 +1,35 @@
-function doGet(e) {
-  // we have here the data from the client in GET paremeters
-  // https://script.google.com/macros/s/.../exec?data={"AisGateId": 123}&template=TemplateAPEX1
-  let reportData = {"AisGateId": 1234};
-  let templateName = "TemplateAPEX1";
-  if (e) {
-    reportData = {"AisGateId": 1234};//JSON.parse(Utilities.base64Encode(e.parameter.data));
-    templateName = e.parameter.template;
-  }
-  console.log(Utilities.base64EncodeWebSafe('eyJBaXNHYXRlSWQiOiJ4eHgxMjMifQ=='));
-  console.log(Utilities.base64Decode('eyJBaXNHYXRlSWQiOiJ4eHgxMjMifQ=='));
-  //
-  // throw new Error( "reportData: " + reportData);
-  //
+// Description: Google Apps Script code for Google Report Server
+// This code is used to generate a report based on the template and data provided by the client.
+
+// global variables
+const TEMPLATES_FOLDER_NAME = 'APEX Google Report Server';
+let fileType = "application/pdf";
+let fileName = "filename.pdf";
+
+// doPost function is used to handle the POST request from the client.
+function doPost(e) {
+  // we have here the data from the client in POST body
+  let dataBody= JSON.parse(e.postData.contents);
+  let templateName = dataBody.template;
+  let reportData = dataBody.data;
 
   // transform data into report
-  let templateFile = getDriveFile(templateName);
-  let reportEncoded = getReportFile(reportData, templateFile);
+  let templateFile = getDriveFileByName(templateName);
+  let reportEncoded = renderReportFile(reportData, templateFile);
 
   // return report data to the client
   return ContentService.createTextOutput(reportEncoded);
 }
 
+// doGet function is used to handle the GET request from the client.
+function doGet(e) {
+  // we have a call from the client as GET method
+  // return info about app and about the call via POST method
+  return ContentService.createTextOutput('Call me via POST!');
+}
+
 // get the template file by neame - we are taking the last one - use unic name on drive to avoid this
-function getDriveFile(fileName) {
+function getDriveFileByName(fileName) {
     let files = DriveApp.getFilesByName(fileName);
   let fileId = '';
   while (files.hasNext()) {
@@ -33,7 +40,7 @@ function getDriveFile(fileName) {
 };
 
 // get the template folder by neame - we are taking the last one - use unic name on drive to avoid this
-function getDriveFolder(folderName) {
+function getDriveFolderByName(folderName) {
   let folders = DriveApp.getFoldersByName(folderName);
   let folderId;
   while (folders.hasNext()) {
@@ -43,22 +50,21 @@ function getDriveFolder(folderName) {
   return DriveApp.getFolderById(folderId);
 };
 
-function getReportFile(reportData, templateFile) {
+function renderReportFile(reportData, templateFile) {
   // gate template body
-  let TEMP_Folder = getDriveFolder('APEX Google Report Server');
-  const newTempFile = templateFile.makeCopy(TEMP_Folder);
+  let TemplatesFolder = getDriveFolderByName(TEMPLATES_FOLDER_NAME);
+  const newTemplateFile = templateFile.makeCopy(TemplatesFolder);
   const  OpenDoc = DocumentApp.openById(newTempFile.getId());
 
-  // gate id info
+  // replace the placeholders with the data
   const body = OpenDoc.getBody();
   body.replaceText("{AisGateId}", reportData.AisGateId);
 
-  //
+  // save the file and return the encoded content
   OpenDoc.saveAndClose();
-  const BLOBPDF = newTempFile.getAs(MimeType.PDF);
-  TEMP_Folder.createFile(BLOBPDF).setName(reportData.AisGateId + ".pdf");
-  TEMP_Folder.removeFile(newTempFile);
-
+  const BLOBPDF = newTemplateFile.getAs(fileType);
+  TemplatesFolder.createFile(BLOBPDF).setName(fileName);
+  TemplatesFolder.removeFile(newTemplateFile);
 
   // const content = OpenDoc.getBlob().getBytes();
   const content = BLOBPDF.getBytes();

@@ -1,9 +1,15 @@
-let url = 'https://script.google.com/macros/s/AKfycbz3vnY1th067-PFtY-onFkPv9O_6RGEoreHmPgS--5Dm_Vc1WkDAz0oinwfBMM-Ck_0/exec';
-url = url + '?template=TemplateAPEX1&data='
-url = url + btoa(JSON.stringify({"AisGateId":"xxx123"}));
-console.log(url);
+/* Description: This is the code that will be used in the APEX application 
+  to download the report file from the Google Apps Script.
+*/
 
-fetch(url, { method: 'GET', redirect: 'follow' })
+// 1. Define the variables
+let url = 'https://script.google.com/macros/s/AKfycby1XlaeeK0lI4VLhTmk2k3en5d23x_-W2Gkuvj751gZKUj4eGRyWTDaxtZct02VPc_z/exec';
+let bodyData = { template: "TemplateAPEX1", data: { AisGateId: "xxx123" } };
+let fileType = "application/pdf";
+let fileName = "filename.pdf";
+
+// 2. Fetch the data from the server
+fetch(url, { method: 'POST', redirect: 'follow', body: JSON.stringify(bodyData) })
     .then(response => response.text())
     .then((text) => {
         console.log(text.length);
@@ -14,19 +20,21 @@ fetch(url, { method: 'GET', redirect: 'follow' })
     }
     )
 
-//
+// 3. Download the file in browser
 function downloadTheRaportResult(rawdata) {
+    // decode base64 to bytes
     const base64ToDecode = atob(rawdata);
     const bytesArr = new Array(base64ToDecode.length);
     for (i = 0; i < base64ToDecode.length; i++) {
         bytesArr[i] = base64ToDecode.charCodeAt(i);
     }
     const bytes4Blob = new Uint8Array(bytesArr)
-    const blob = new Blob([bytes4Blob], { "type": "application/pdf" });
+    const blob = new Blob([bytes4Blob], { "type": fileType });
+
+    // create a link element, hide it, direct it towards the blob, and then 'click' it programatically
     const downloadLink = document.createElement("a");
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = "filename.pdf";
-    downloadLink.click(); // this will start the download instantly! 
+    downloadLink.download = fileName;
+    downloadLink.click();
     downloadLink.remove();
 }
-
