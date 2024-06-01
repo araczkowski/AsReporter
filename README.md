@@ -4,7 +4,7 @@ Application Script Reporter is a business applications that produce Office docum
 
 ## Architecture
 
-
+![diagram](images/ASReporter.png?raw=true "ASReporter diagram")
 
 ## Create Apps Script Web App in Google Workspace
 
