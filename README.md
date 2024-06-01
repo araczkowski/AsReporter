@@ -24,9 +24,25 @@ you can name it -> ``ASReporter Office Print Server``
 
 Copy and Paste the code from file in this repo: [Code.gs.js](Code.gs.js) to the ``Code.gs`` file in Apps script
 
-![picture3](images/2.png?raw=true "Apps Script 3")
+![picture3](images/3.png?raw=true "Apps Script 3")
 
 #### 4. Deploy Web app
+
+Click a button ``Deploy`` -> ``New deployment`` to deploy the project
+
+![picture4](images/4.png?raw=true "Apps Script 4")
+
+as a deployment type choice ``Web app``
+
+![picture5](images/5.png?raw=true "Apps Script 5")
+
+you can add a description and you need to change the ``Who has access`` parameter to ``Anyone``
+after this click the ``Deploy`` button
+
+![picture6](images/6.png?raw=true "Apps Script 6")
+
+if you are doing this for the first time you need to ``Authorize access``
+
 
 ### Create report templates folder in Google Drive
 
