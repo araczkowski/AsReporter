@@ -1,6 +1,6 @@
 # AsReporter - Application Script Reporter
 
-Application Script Reporter is a business applications that produce Office documents and reports beased on templates and JSON data. AsReporter is a Web app writen in Google Apps Script, it enabling any web application to generate your Office (Word, Excel, PowerPoint), HTML, Text and PDF-documents in no time and effort - AsReporter make printing, reporting and exporting your data fast and easy.
+AsReporter is a business application that produces Office documents and PDF reports based on templates and JSON data. AsReporter is a Web app written in Google Apps Script, enabling any web application to generate your Office (Word, Excel, PowerPoint) and PDF-documents in no time and effort - AsReporter makes reporting in any application fast and easy.
 
 ## Architecture overview
 
@@ -60,7 +60,7 @@ Copy and Paste the folder ``AsReporter Templates Files`` from this repo to the `
 
 #### 2. Review the demo template
 
-In the folder ``Google Drive`` -> ``AsReporter Templates Files`` there is a file ``Demo report template`` open it in Google Docs to see how the template was writen:
+In the folder ``Google Drive`` -> ``AsReporter Templates Files`` there is a file ``Demo report template`` open it in Google Docs to see how the template was written:
 ![picture12](images/12.png?raw=true "Apps Script 12")
 You should easy see the text and table placeholders.
 
@@ -68,7 +68,7 @@ You should easy see the text and table placeholders.
 
 #### 1. From Apps Script
 
-In Apps script you can runn or debug the ``doPost`` function:
+In Apps script you can run or debug the ``doPost`` function:
 ![picture13](images/13.png?raw=true "Apps Script 13")
 After ``doPost`` run or debug, you can open generated pdf file in Google Drive folder ``AsReporter Templates Files``:
 ![picture14](images/14.png?raw=true "Apps Script 14")
@@ -79,16 +79,15 @@ Go to any page in the browser, for example ``https://google.com`` and open a bro
 Now paste to the console code from the script ``BrowserAppCode.js`` and press ``Enter``:
 ![picture15](images/15.png?raw=true "Apps Script 15")
 
-The report will be produced and downloaded in the browser - you will recive a prompt to save it:
+The report will be produced and downloaded in the browser - you will receive a prompt to save it:
 ![picture16](images/16.png?raw=true "Apps Script 16")
 
-Now you can open the report from your disk to see the resoult:
+Now you can open the report from your disk to see the result:
 ![picture17](images/17.png?raw=true "Apps Script 17")
 (as you can see my pdf viewer on Ubuntu can't handle the emoticons color... never mind)
 
 #### 3. Use ``ApexAppCode.js`` in Oracle APEX to POST report rendering and download from Oracle APEX
 
-If you wish to generate report from APEX then you can use sample ``ApexAppCode.js`` for this.
-Just copy this code and paste in the dynamic action after button do download report is clicked:
+If you wish to generate reports or documents from APEX then you can use sample ``ApexAppCode.js`` for this. Just copy this code and paste in the dynamic action after button do download report is clicked:
 
 > TODO - finish the description...
