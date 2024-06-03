@@ -127,7 +127,6 @@ function renderReportFile(reportData, templateFile) {
   let tableIdx = 0;
   tables.forEach(table => {
     table.removeRow(1);
-
     for (let r = 0; r < reportData.tables[tableIdx].length; r++) {
       let tr = table.appendTableRow();
       for (let c = 0; c < reportData.tables[tableIdx][r].length; c++) {
@@ -135,7 +134,6 @@ function renderReportFile(reportData, templateFile) {
         td.getChild(0).asParagraph().setAttributes(cellStyle);
       }
     }
-
     tableIdx = tableIdx+1;
   });
 

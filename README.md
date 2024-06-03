@@ -94,31 +94,18 @@ If you wish to generate reports or documents from APEX then you can use sample `
 
 Of course you can get JSON data from Oracle DB, for this:
 
-a) Add ``Ajax Calback`` process on APEX page:
+a) Add ``Ajax Calback`` process named **GET_REPORT_JSON** on APEX page:
     ```
     DECLARE
-        FUNCTION SQL2JSON(sql_statement VARCHAR2) RETURN VARCHAR2
-        AS
-            cur_sql SYS_REFCURSOR;
-            p1_json VARCHAR2(32000);
-        BEGIN
-            OPEN cur_sql FOR sql_statement;
-            apex_json.initialize_clob_output;
-            apex_json.open_object;
-            APEX_JSON.write('ret', cur_sql); 
-            apex_json.close_object;
-            p1_json := apex_json.get_clob_output;
-            apex_json.free_output;
-            
-            RETURN p1_json;
-        END;
+        l_clob  clob;
+        l_query varchar2(32767);
     BEGIN
-        htp.p(SQL2JSON(apex_application.g_x01));
+        l_query := apex_application.g_x01;
+        EXECUTE IMMEDIATE l_query
+            INTO l_clob;
+        htp.p(l_clob);
     END;
-
     ```
-
-    Name it -> **GET_REPORT_JSON**
 
 ![picture19](images/19.png?raw=true "Apps Script 19")
 

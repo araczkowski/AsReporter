@@ -3,9 +3,6 @@
 // TODO Move this to APP Global settings
 let url = 'https://script.google.com/macros/s/AKfycbx_V5pYTR9iTjcWpi4u1R8u2K850i8FFx6JoGH_1FpBr36SVJVkN_TPlVTIvguMLaxN/exec';
 // ------------------------------
-let date = new Date();
-let time = date.toLocaleTimeString();
-
 //
 G_WaitPopup = apex.widget.waitPopup();
 apex.message.showPageSuccess("PDF generation has started.");
@@ -13,43 +10,58 @@ setTimeout(function () {
     $('#APEX_SUCCESS_MESSAGE').fadeOut('fast');
 }, 3000);
 
-
 // Get JSON from Oracle DB via AJAX 
-let sqlStatement = `SELECT 'APEX_TEPLATE_1' as "template",
-             'APEX_REPORT_NEW' as "fileName",
-             'application/pdf' as "fileType",
-             cursor (select cursor (
-                        select user as "Name", 
-                        sysdate as "time" from dual) as "placeholders"
-                       from dual) as "data"
-        FROM DUAL`;
+let sqlStatement = `select JSON_OBJECT(key 'templateName' value 'APEX_TEPLATE_1',
+                   key 'fileName' value 'APEX_REPORT_NEW.pdf',
+                   key 'fileType' value 'application/pdf',
+                   key 'data' value
+                   JSON_OBJECT(key 'placeholders'
+                               value(JSON_OBJECT(key 'Name' value user,
+                                                 key 'Time' value sysdate)),
+                               key 'tables'
+                               value(JSON_OBJECT(key '0' value
+                                                 (select json_arrayagg(JSON_ARRAY(t.TABLE_NAME,
+                                                                                  t.TABLESPACE_NAME,
+                                                                                  t.LAST_ANALYZED)
+                                                                       RETURNING CLOB)
+                                                    from all_tables t where rownum < 3),
+                                                 key '1' value (select json_arrayagg(JSON_ARRAY(1,
+                                                                                  2,
+                                                                                  3)
+                                                                       RETURNING CLOB)
+                                                    from dual)
+                                                 
+                                                 RETURNING CLOB)) RETURNING CLOB)
+                   RETURNING CLOB)
+            INTO :into_bind
+            from dual`;
+
 apex.server.process(
-    'GET_REPORT_JSON',            
-    { x01: sqlStatement },  
+    'GET_REPORT_JSON',
+    { x01: sqlStatement },
     {
-        success: function (pData) {  
-            console.log(pData);           
+        success: function (pData) {
+            console.log("GET_REPORT_JSON: " + pData);
             let json = JSON.parse(pData);
-            fetchAsReport(json.ret[0]);
+            fetchAsReport(json);
         },
-        dataType: "text"                   
+        dataType: "text"
     }
 );
 
-
 function fetchAsReport(bodyData) {
-    console.log(bodyData);
+    console.log("fetchAsReport:" + JSON.stringify(bodyData));
 
     fetch(url, { method: 'POST', redirect: 'follow', body: JSON.stringify(bodyData) })
         .then(response => response.text())
         .then((text) => {
-            console.log(text.length);
+            console.log("fetchAsReport text:" + text.length);
             downloadTheRaportResult(text, bodyData);
         })
         .catch(err => {
             console.log(err);
         }
-        )
+    )
 }
 //
 function downloadTheRaportResult(rawdata, bodyData) {
