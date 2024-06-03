@@ -89,5 +89,33 @@ Now you can open the report from your disk to see the result:
 #### 3. Use ``ApexAppCode.js`` in Oracle APEX to POST report rendering and download from Oracle APEX
 
 If you wish to generate reports or documents from APEX then you can use sample ``ApexAppCode.js`` for this. Just copy this code and paste in the dynamic action after button do download report is clicked:
+![picture18](images/18.png?raw=true "Apps Script 18")
 
-> TODO - finish the description...
+
+Of course you can get JSON data from Oracle DB, for this:
+
+1. Add ``Ajax Calback`` process on APEX page:
+    ``
+    DECLARE
+        FUNCTION SQL2JSON(sql_statement VARCHAR2) RETURN VARCHAR2
+        AS
+            cur_sql SYS_REFCURSOR;
+            p1_json VARCHAR2(32000);
+        BEGIN
+            OPEN cur_sql FOR sql_statement;
+            apex_json.initialize_clob_output;
+            apex_json.open_object;
+            apex_json.write(cur_sql);
+            apex_json.close_object;
+            p1_json := apex_json.get_clob_output;
+            apex_json.free_output;
+            
+            RETURN p1_json;
+        END;
+    BEGIN
+        htp.p(SQL2JSON(apex_application.g_x01));
+    END;
+
+    ``
+
+    2. 
