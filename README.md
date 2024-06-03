@@ -113,3 +113,68 @@ a) Add ``Ajax Calback`` process named **GET_REPORT_JSON** on APEX page:
 b)  Add code from file: ``ApexAppCode_with_GetJson.js`` to the dynamic action type JS, executed after the button do download report is clicked:
 ![picture20](images/20.png?raw=true "Apps Script 20")
 
+The important part is a JSON creation from SQL query, we need to have a special structure of the JSON that I’m using. To do this we can use this kind of query as below:
+
+```
+select JSON_OBJECT(key 'template' value 'APEX_TEPLATE_1',
+                   key 'fileName' value 'APEX_REPORT_NEW.pdf',
+                   key 'fileType' value 'application/pdf',
+                   key 'data' value
+                   JSON_OBJECT(key 'placeholders'
+                               value(JSON_OBJECT(key 'Name' value user,
+                                                 key 'Time' value sysdate)),
+                               key 'tables'
+                               value(JSON_OBJECT(key '0' value
+                                                 (select json_arrayagg(JSON_ARRAY(t.TABLE_NAME,
+                                                                                  t.TABLESPACE_NAME,
+                                                                                  t.LAST_ANALYZED)
+                                                                       RETURNING CLOB)
+                                                    from all_tables t),
+                                                 key '1' value (select json_arrayagg(JSON_ARRAY(1,
+                                                                                  2,
+                                                                                  3)
+                                                                       RETURNING CLOB)
+                                                    from dual)
+                                                 
+                                                 RETURNING CLOB)) RETURNING CLOB)
+                   RETURNING CLOB)
+  INTO :into_bind
+  from dual
+```
+
+in retur we will receive a JSON like this:
+
+```
+{
+   "template":"APEX_TEPLATE_1",
+   "fileName":"APEX_REPORT_NEW.pdf",
+   "fileType":"application/pdf",
+   "data":{
+      "placeholders":{
+         "Name":"APEX_PUBLIC_USER",
+         "Time":"2024-06-03T19:51:32"
+      },
+      "tables":{
+         "0":[
+            [
+               "DUAL",
+               "SYSTEM",
+               "2021-04-28T22:04:15"
+            ],
+            [
+               "MAP_OBJECT"
+            ]
+         ],
+         "1":[
+            [
+               1,
+               2,
+               3
+            ]
+         ]
+      }
+   }
+}
+```
+
+After this explanation and code snippets I hope, you can easily imagine how to add the next table or next placeholder in JSON and in template.

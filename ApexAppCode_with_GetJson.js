@@ -1,5 +1,3 @@
-// Copyright © 2024 SVIETE Andrzej Raczkowski
-// Description: Script to get report from AsReporter - you can run it on Oracle APEX Page
 // TODO Move this to APP Global settings
 let url = 'https://script.google.com/macros/s/AKfycbx_V5pYTR9iTjcWpi4u1R8u2K850i8FFx6JoGH_1FpBr36SVJVkN_TPlVTIvguMLaxN/exec';
 // ------------------------------
@@ -11,7 +9,7 @@ setTimeout(function () {
 }, 3000);
 
 // Get JSON from Oracle DB via AJAX 
-let sqlStatement = `select JSON_OBJECT(key 'templateName' value 'APEX_TEPLATE_1',
+let sqlStatement = `select JSON_OBJECT(key 'template' value 'APEX_TEPLATE_1',
                    key 'fileName' value 'APEX_REPORT_NEW.pdf',
                    key 'fileType' value 'application/pdf',
                    key 'data' value
@@ -24,7 +22,7 @@ let sqlStatement = `select JSON_OBJECT(key 'templateName' value 'APEX_TEPLATE_1'
                                                                                   t.TABLESPACE_NAME,
                                                                                   t.LAST_ANALYZED)
                                                                        RETURNING CLOB)
-                                                    from all_tables t where rownum < 3),
+                                                    from all_tables t),
                                                  key '1' value (select json_arrayagg(JSON_ARRAY(1,
                                                                                   2,
                                                                                   3)
