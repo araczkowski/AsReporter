@@ -15,12 +15,14 @@ setTimeout(function () {
 
 
 // Get JSON from Oracle DB via AJAX 
-let sqlStatement = `SELECT 
-                'APEX_TEPLATE_1' as "template", 
-                'APEX_REPORT_2' as "fileName", 
-                'application/pdf' as "fileType",
-                cursor(select user as "Name" from dual) as "data"
-                FROM DUAL`;
+let sqlStatement = `SELECT 'APEX_TEPLATE_1' as "template",
+             'APEX_REPORT_NEW' as "fileName",
+             'application/pdf' as "fileType",
+             cursor (select cursor (
+                        select user as "Name", 
+                        sysdate as "time" from dual) as "placeholders"
+                       from dual) as "data"
+        FROM DUAL`;
 apex.server.process(
     'GET_REPORT_JSON',            
     { x01: sqlStatement },  
@@ -35,8 +37,6 @@ apex.server.process(
 );
 
 
-
-
 function fetchAsReport(bodyData) {
     console.log(bodyData);
 
@@ -44,7 +44,7 @@ function fetchAsReport(bodyData) {
         .then(response => response.text())
         .then((text) => {
             console.log(text.length);
-            downloadTheRaportResult(text);
+            downloadTheRaportResult(text, bodyData);
         })
         .catch(err => {
             console.log(err);
@@ -52,7 +52,7 @@ function fetchAsReport(bodyData) {
         )
 }
 //
-function downloadTheRaportResult(rawdata) {
+function downloadTheRaportResult(rawdata, bodyData) {
     // decode base64 to bytes
     const base64ToDecode = atob(rawdata);
     const bytesArr = new Array(base64ToDecode.length);

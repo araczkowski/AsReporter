@@ -22,6 +22,17 @@ let reportData = {
        }
     };
 
+// APEX case
+// reportData = [
+//       {
+//          placeholders:[
+//             {
+//                "Name":"APEX_PUBLIC_USER"
+//             }
+//          ]
+//       }
+//    ];
+
 // doPost function is used to handle the POST request from the client.
 function doPost(e) {
   // we have here the data from the client in POST body
@@ -94,9 +105,20 @@ function renderReportFile(reportData, templateFile) {
 
   // replace the placeholders with the data
   const body = OpenDoc.getBody();
-  Object.keys(reportData.placeholders).forEach(function(key) {
-    body.replaceText("{"+ key +"}", reportData.placeholders[key]);
-  })
+
+  // simple way
+  if (reportData.constructor === ({}).constructor) {
+    Object.keys(reportData.placeholders).forEach(function(key) {
+      body.replaceText("{"+ key +"}", reportData.placeholders[key]);
+    })
+  }
+
+  // APEX_JSON way
+  if (reportData.constructor === [].constructor) {
+    Object.keys(reportData[0].placeholders[0]).forEach(function(key) {
+      body.replaceText("{"+ key +"}", reportData[0].placeholders[0][key]);
+    })
+  }
 
   // replace table with data
   var cellStyle = {};
@@ -105,6 +127,7 @@ function renderReportFile(reportData, templateFile) {
   let tableIdx = 0;
   tables.forEach(table => {
     table.removeRow(1);
+
     for (let r = 0; r < reportData.tables[tableIdx].length; r++) {
       let tr = table.appendTableRow();
       for (let c = 0; c < reportData.tables[tableIdx][r].length; c++) {
@@ -112,6 +135,7 @@ function renderReportFile(reportData, templateFile) {
         td.getChild(0).asParagraph().setAttributes(cellStyle);
       }
     }
+
     tableIdx = tableIdx+1;
   });
 
