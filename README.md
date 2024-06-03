@@ -95,7 +95,7 @@ If you wish to generate reports or documents from APEX then you can use sample `
 Of course you can get JSON data from Oracle DB, for this:
 
 1. Add ``Ajax Calback`` process on APEX page:
-    ``
+    ```
     DECLARE
         FUNCTION SQL2JSON(sql_statement VARCHAR2) RETURN VARCHAR2
         AS
@@ -116,6 +116,11 @@ Of course you can get JSON data from Oracle DB, for this:
         htp.p(SQL2JSON(apex_application.g_x01));
     END;
 
-    ``
+    ```
+
+    Name it -> **GET_REPORT_JSON**
+
+    ![picture19](images/19.png?raw=true "Apps Script 19")
+
 
     2. 
